@@ -72,3 +72,8 @@ class Fita:
         string += "...]"
 
         return string
+
+    def getConteudo(self):
+        return self.conteudo
+    def getPosicao(self):
+        return self.posicao

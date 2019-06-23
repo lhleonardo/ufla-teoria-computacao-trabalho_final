@@ -25,32 +25,34 @@ def main():
     q2 = Estado("q2")
     q3 = Estado("q3")
     q4 = Estado("q4")
+    q5 = Estado("q5")
+    q6 = Estado("q6")
 
     q0.adicionaTransicao(leitura=Simbolo.B, destino=q1,
                          escrita=Simbolo.B, direcao=Direcao.DIREITA)
 
     q1.adicionaTransicao(leitura=Simbolo.a, destino=q2,
                          escrita=Simbolo.a, direcao=Direcao.DIREITA)
-    q1.adicionaTransicao(leitura=Simbolo.b, destino=q3,
+    q1.adicionaTransicao(leitura=Simbolo.b, destino=q6,
                          escrita=Simbolo.b, direcao=Direcao.DIREITA)
 
-    q2.adicionaTransicao(leitura=Simbolo.b, destino=q2,
-                         escrita=Simbolo.b, direcao=Direcao.DIREITA)
-    q2.adicionaTransicao(leitura=Simbolo.B, destino=q4,
-                         escrita=Simbolo.B, direcao=Direcao.ESQUERDA)
-
-    q3.adicionaTransicao(leitura=Simbolo.a, destino=q3,
+    q2.adicionaTransicao(leitura=Simbolo.a, destino=q4,
                          escrita=Simbolo.a, direcao=Direcao.DIREITA)
-    q3.adicionaTransicao(leitura=Simbolo.B, destino=q4,
-                         escrita=Simbolo.B, direcao=Direcao.ESQUERDA)
+
+    q4.adicionaTransicao(leitura=Simbolo.b, destino=q5,
+                         escrita=Simbolo.b, direcao=Direcao.ESQUERDA)
+
+    q5.adicionaTransicao(leitura=Simbolo.a, destino=q1,
+                         escrita=Simbolo.a, direcao=Direcao.ESQUERDA)                                         
 
     m1.adicionaEstado(q0, inicial=True)
     m1.adicionaEstado(q1)
     m1.adicionaEstado(q2)
     m1.adicionaEstado(q3)
     m1.adicionaEstado(q4)
+    m1.adicionaEstado(q5)
 
-    m1.setEntrada("abbb")
+    m1.setEntrada("aab")
 
     i = 1
     while m1.atuar():
