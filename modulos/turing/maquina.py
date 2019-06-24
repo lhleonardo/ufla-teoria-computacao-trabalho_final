@@ -6,12 +6,15 @@ from modulos.turing.estado import Estado, Transicao
 
 class Maquina:
     def __init__(self):
-        self.heuristica = []
         self.fita = Fita()
         self.estadoInicial = None
         self.estadoAtual = None
 
         self.estados = []
+
+        # definição de um histórico de passadas via transições
+        # utilizado para aplicação da heurística que resolve o problema da parada
+        self.historico = []
 
     """
         Adiciona um novo estado na representação da máquina de Turing.
@@ -30,25 +33,27 @@ class Maquina:
 
         if inicial:
             self.estadoAtual = estado
-        self.heuristica.append([])
 
+        # cria-se uma posição para cada estado adicionado na máquina
+        self.historico.append([])
 
     def atuar(self):
         print(self.fita)
-        
+
         simboloAtual = self.fita.ler()
         transicao = self.estadoAtual.obterTransicao(simboloAtual)
-        realizado = False
-        if (transicao is not None):
+        
+        executouTransicao = transicao is not None
+        if executouTransicao:
             self.estadoAtual = transicao.destino
-
             self.fita.escrever(transicao.escrita)
             self.fita.mover(transicao.direcao)
-            realizado = True
-        loop = self.verificaLoop()
-        if loop and realizado:
-            raise Exception("Loop BIG HEAD DE CAGANEIRA")
-        return realizado
+
+        if executouTransicao and self.verificaLoop():
+            raise Exception(
+                "[Maquina::atuar]: Foi identificado a partir de heurísticas que este programa está em loop.")
+
+        return executouTransicao
 
     def setEntrada(self, entrada):
         # pula o primeiro branco
@@ -68,17 +73,20 @@ class Maquina:
             self.fita.mover(Direcao.ESQUERDA)
 
     def verificaLoop(self):
-        loop = False
-        localEstado = 0
+        indiceEstadoAtual = 0
+
         for estado in self.estados:
-            if estado != self.estadoAtual:
-                localEstado += 1
-            else:
+            if estado == self.estadoAtual:
                 break
-        if ({self.fita.getPosicao():self.fita.getConteudo()}) in self.heuristica[localEstado]:
+            indiceEstadoAtual += 1
+
+        # define a situação que a máquina se encontra
+        # a posição atual de sua cabeça de leitura e o conteúdo presente na fita
+        situacaoAtual = {self.fita.getPosicao(): self.fita.getConteudo()}
+        
+        if situacaoAtual in self.historico[indiceEstadoAtual]:
             return True
-        else:
-            self.heuristica[localEstado].append({self.fita.getPosicao():self.fita.getConteudo()})
-            return False
-
-
+        
+        # salva o estado (índice) no histórico e grava consigo a situação atual da fita
+        self.historico[indiceEstadoAtual].append(situacaoAtual)
+        return False

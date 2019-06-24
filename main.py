@@ -18,45 +18,57 @@ from modulos.turing.estado import Estado, Transicao
 
 
 def main():
-    m1 = Maquina()
+    print()
+    print("Início da execução do simulador\n")
+    try:
+        m1 = Maquina()
 
-    q0 = Estado("q0")
-    q1 = Estado("q1")
-    q2 = Estado("q2")
-    q3 = Estado("q3")
-    q4 = Estado("q4")
-    q5 = Estado("q5")
-    q6 = Estado("q6")
+        q0 = Estado("q0")
+        q1 = Estado("q1")
+        q2 = Estado("q2")
+        q3 = Estado("q3")
+        q4 = Estado("q4")
+        q5 = Estado("q5")
+        q6 = Estado("q6")
 
-    q0.adicionaTransicao(leitura=Simbolo.B, destino=q1,
-                         escrita=Simbolo.B, direcao=Direcao.DIREITA)
+        q0.adicionaTransicao(leitura=Simbolo.B, destino=q1,
+                             escrita=Simbolo.B, direcao=Direcao.DIREITA)
 
-    q1.adicionaTransicao(leitura=Simbolo.a, destino=q2,
-                         escrita=Simbolo.a, direcao=Direcao.DIREITA)
-    q1.adicionaTransicao(leitura=Simbolo.b, destino=q6,
-                         escrita=Simbolo.b, direcao=Direcao.DIREITA)
+        q1.adicionaTransicao(leitura=Simbolo.a, destino=q2,
+                             escrita=Simbolo.a, direcao=Direcao.DIREITA)
+        q1.adicionaTransicao(leitura=Simbolo.b, destino=q6,
+                             escrita=Simbolo.b, direcao=Direcao.DIREITA)
 
-    q2.adicionaTransicao(leitura=Simbolo.a, destino=q4,
-                         escrita=Simbolo.a, direcao=Direcao.DIREITA)
+        q2.adicionaTransicao(leitura=Simbolo.a, destino=q4,
+                             escrita=Simbolo.a, direcao=Direcao.DIREITA)
 
-    q4.adicionaTransicao(leitura=Simbolo.b, destino=q5,
-                         escrita=Simbolo.b, direcao=Direcao.ESQUERDA)
+        q4.adicionaTransicao(leitura=Simbolo.b, destino=q5,
+                             escrita=Simbolo.b, direcao=Direcao.ESQUERDA)
 
-    q5.adicionaTransicao(leitura=Simbolo.a, destino=q1,
-                         escrita=Simbolo.a, direcao=Direcao.ESQUERDA)                                         
+        q5.adicionaTransicao(leitura=Simbolo.a, destino=q1,
+                             escrita=Simbolo.a, direcao=Direcao.ESQUERDA)
 
-    m1.adicionaEstado(q0, inicial=True)
-    m1.adicionaEstado(q1)
-    m1.adicionaEstado(q2)
-    m1.adicionaEstado(q3)
-    m1.adicionaEstado(q4)
-    m1.adicionaEstado(q5)
+        m1.adicionaEstado(q0, inicial=True)
+        m1.adicionaEstado(q1)
+        m1.adicionaEstado(q2)
+        m1.adicionaEstado(q3)
+        m1.adicionaEstado(q4)
+        m1.adicionaEstado(q5)
 
-    m1.setEntrada("aab")
+        m1.setEntrada("aab")
 
-    i = 1
-    while m1.atuar():
-        print("A máquina executou ", i, " vez(es)")
-        i = i + 1
+        i = 1
+        while m1.atuar():
+            print("A máquina executou ", i, " vez(es)")
+            i = i + 1
+    except Exception as identifier:
+        print()
+        print("Um erro aconteceu durante a execução!")
+        print("Detalhes: ")
+        print("\t- " + str(identifier))
+    finally:
+        print()
+        print("Fim da execução do simulador.")
+
 
 main()
