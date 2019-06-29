@@ -1,13 +1,18 @@
 from modulos.utils.colors import Color
 from enum import Enum
 
-
+"""
+    Enumeração com todos os símbolos possíveis presentes no alfabeto
+"""
 class Simbolo(Enum):
     a = 1
     b = 2
     B = 3
 
 
+"""
+    Direções que uma fita pode mover-se
+"""
 class Direcao(Enum):
     ESQUERDA = 1
     DIREITA = 2
@@ -39,16 +44,23 @@ class Fita:
     def escrever(self, simbolo):
         self.conteudo[self.posicao] = simbolo
 
+    """
+        Move o ponteiro de leitura/escrita da fita para uma determinada direção (ESQUERDA ou DIREITA)
+    """
     def mover(self, direcao):
         if direcao == Direcao.DIREITA:
             self.posicao = self.posicao + 1
         else:
             self.posicao = self.posicao - 1
 
-        # sempre colocar um Branco na última posição
+        # sempre colocar um Branco na última posição, caso extrapolar 
+        # o tamanho da lista que representa o conteudo atual da fita
         if self.posicao == len(self.conteudo):
             self.conteudo.append(Simbolo.B)
 
+    """
+        Representação da fita para a saída padrão. Cor vermelha simboliza posição que se encontra.
+    """
     def __repr__(self):
         string = "["
         atual = 0

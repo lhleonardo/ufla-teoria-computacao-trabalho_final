@@ -37,24 +37,36 @@ class Maquina:
         # cria-se uma posição para cada estado adicionado na máquina
         self.historico.append([])
 
+    """
+        Executa uma operação em cima da máquina e seus posicionamentos atuais. 
+
+        Cada atuação lê o estado atual, simbolo presente na fita e executa uma transição específica.
+
+        Máquina não comprovada para não determinismo. Não se sabe seu comportamento para estes casos.
+    """
     def atuar(self):
-        print(self.fita)
+        
 
         simboloAtual = self.fita.ler()
         transicao = self.estadoAtual.obterTransicao(simboloAtual)
         
         executouTransicao = transicao is not None
         if executouTransicao:
+            print("Transição: ", transicao)
+            print("Fita: ", self.fita)
             self.estadoAtual = transicao.destino
             self.fita.escrever(transicao.escrita)
             self.fita.mover(transicao.direcao)
 
-        if executouTransicao and self.verificaLoop():
+        if executouTransicao and self.__verificaLoop():
             raise Exception(
                 "[Maquina::atuar]: Foi identificado a partir de heurísticas que este programa está em loop.")
 
         return executouTransicao
 
+    """
+        Define a entrada da máquina, que deverá ser processada.
+    """
     def setEntrada(self, entrada):
         # pula o primeiro branco
         self.fita.mover(Direcao.DIREITA)
@@ -71,8 +83,11 @@ class Maquina:
 
         while(self.fita.posicao != 0):
             self.fita.mover(Direcao.ESQUERDA)
-
-    def verificaLoop(self):
+    
+    """
+        Verificação contídua na heurística do problema da parada
+    """
+    def __verificaLoop(self):
         indiceEstadoAtual = 0
 
         for estado in self.estados:
